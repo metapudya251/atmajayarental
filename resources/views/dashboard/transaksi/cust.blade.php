@@ -22,11 +22,11 @@
                     <p class="text-primary m-0 fw-bold">Detail Transaksi</p>
                 </div>
                 <div class="col-6 text-end">
-                    <a class="btn btn-info btn-icon-split" role="button" href="{{ route('transaksi.cetakNota', $transaksi->id) }}">
+                    <a class="btn btn-info btn-icon-split" role="button" href="{{ route('transaksi.cetakNota3', $transaksi->id) }}">
                         <span class="text-white-50 icon"><i class="fas fa-print"></i></span>
                         <span class="text-white text">Cetak PDF</span>
                     </a>
-                    <a class="btn btn-warning btn-icon-split" role="button" href="{{ route('transaksi.cetakNota1', $transaksi->id) }}">
+                    <a class="btn btn-warning btn-icon-split" role="button" href="{{ route('transaksi.cetakNota4', $transaksi->id) }}">
                         <span class="text-white-50 icon"><i class="fas fa-eye"></i></span>
                         <span class="text-white text">Preview PDF</span>
                     </a>

@@ -36,30 +36,32 @@
     <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
       @if (count($aset))
            @foreach($aset as $aset)
-           <div class="col-md-auto">
-              <div class="card h-100" style="width: 14rem;">
-                  @if ($aset->img == NULL)
-                      <img class="img-fluid square mb-3 card-img-top" src="{{ url('assets/img/avatars/avatar6.jpeg') }}"  style="width: 14rem; height: 14rem" >
-                  @else
-                      <img class="img-fluid square mb-3 card-img-top" src="{{ url('fotoaset/',$aset->img) }}"  style="width: 14rem; height: 14rem" >
-                  @endif
-                  <div class="card-body">
-                      <h5 class="card-title">{{ $aset->nama_mobil }}</h5> 
-                      <p class="card-text">Harga Sewa Mobil : Rp.{{ $aset->biaya_sewa }}</p>
-                      <p class="card-text">Jenis Transmisi {{ $aset->jenis_transmisi }}</p>
-                      <p class="card-text">Kapasitas {{ $aset->kapasitas_mobil }}</p>
-                  </div>
-                  @if ($aset->status_tersedia == "Tersedia")
-                      <div class="card-footer ">
-                        <a href="{{ route('transaksi.create',$aset->id) }} " type="button" class="btn btn-primary">Booking</a>
-                      </div>
-                  @else
-                      <div class="card-footer bg-warning">
-                          <small class="text-dark">{{ $aset->status_tersedia }}</small>
-                      </div>
-                  @endif
+            @if ($aset->status_kontrak != '0 days remaining' || $aset->pemilik_id == NULL)
+              <div class="col-md-auto">
+                <div class="card h-100" style="width: 14rem;">
+                    @if ($aset->img == NULL)
+                        <img class="img-fluid square mb-3 card-img-top" src="{{ url('assets/img/avatars/avatar6.jpeg') }}"  style="width: 14rem; height: 14rem" >
+                    @else
+                        <img class="img-fluid square mb-3 card-img-top" src="{{ url('fotoaset/',$aset->img) }}"  style="width: 14rem; height: 14rem" >
+                    @endif
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $aset->nama_mobil }}</h5> 
+                        <p class="card-text">Harga Sewa Mobil : Rp.{{ $aset->biaya_sewa }}</p>
+                        <p class="card-text">Jenis Transmisi {{ $aset->jenis_transmisi }}</p>
+                        <p class="card-text">Kapasitas {{ $aset->kapasitas_mobil }}</p>
+                    </div>
+                    @if ($aset->status_tersedia == 'Tersedia')
+                        <div class="card-footer ">
+                          <a href="{{ route('transaksi.create',$aset->id) }} " type="button" class="btn btn-primary">Booking</a>
+                        </div>
+                    @else
+                        <div class="card-footer bg-warning">
+                            <small class="text-dark">{{ $aset->status_tersedia }}</small>
+                        </div>
+                    @endif
+                </div>
               </div>
-          </div>
+            @endif
            @endforeach
       {{-- @else
           <h5 class="card-title">Tidak ada</h5>  --}}

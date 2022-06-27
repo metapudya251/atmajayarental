@@ -6,12 +6,13 @@
         <div class="col-md-6" style="height: 31.125px;">
             <h3 class="text-dark">Data Customer</h3>
         </div>
-        <div class="col-md-6 d-flex justify-content-sm-end" style="padding: 9px;">
+        <div><br></div>
+        {{-- <div class="col-md-6 d-flex justify-content-sm-end" style="padding: 9px;">
             <a class="btn btn-success btn-icon-split" role="button" href="{{ route('customer.create') }}">
                 <span class="text-white-50 icon"><i class="fas fa-check"></i></span>
                 <span class="text-white text">Tambah Data</span>
             </a>
-        </div>
+        </div> --}}
     </div>
 </div>
 <div class="container-fluid">
@@ -42,6 +43,7 @@
                             <th scope="col">Nama</th>
                             <th scope="col">Gender</th>
                             <th scope="col">Email</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -58,6 +60,11 @@
                                         @endif
                                         <td>{{ $cus->gender}}</td>
                                         <td>{{ $cus->email }}</td>
+                                        @if ($cus->status_verif == "Terverifikasi")
+                                            <td><span class="badge bg-success">{{ $cus->status_verif }}</span></a></td>
+                                        @else
+                                            <td><a href="{{ route('customer.updateVerifCust',$cus->id) }}" type="button"><span class="badge bg-warning">{{ $cus->status_verif }}</span></a></td>
+                                        @endif
                                         <td class="text-center">
                                             <form action="{{ route('customer.destroy',$cus->id) }}">
                                                 <a class="btn btn-info btn-circle ms-1" role="button" href="{{ route('customer.show', $cus->id) }}"><i class="fas fa-info-circle text-white"></i></a>
@@ -81,6 +88,7 @@
                             <td><strong>Nama</strong></td>
                             <td><strong>Gender</strong></td>
                             <td><strong>Email</strong></td>
+                            <td><strong>Status</strong></td>
                             <td><strong>Action</strong></td>
                         </tr>
                     </tfoot>

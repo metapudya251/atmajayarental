@@ -28,13 +28,22 @@ class AsetController extends Controller
         $tgl = Carbon::now();
         foreach ($asets as $mobil){
             $contract = (int)((strtotime($mobil->periode_selesai_kontrak) - strtotime($tgl) )/86400);
-            if ($contract > 30) {
-                $mobil['status_kontrak'] = "On going";
+            if ($mobil->pemilik_id == NULL) {
+                $mobil['status_kontrak'] = "Tidak memiliki kontrak";
                 $mobil->save();
-            }else {
-                $mobil['status_kontrak'] = $contract . " days remaining";
-                $mobil->save();
+            } else {
+                if ($contract > 30) {
+                    $mobil['status_kontrak'] = "On going";
+                    $mobil->save();
+                }elseif ($contract < 0) {
+                    $mobil['status_kontrak'] = "0 days remaining";
+                    $mobil->save();
+                }else {
+                    $mobil['status_kontrak'] = $contract.' days remaining';
+                    $mobil->save();
+                }
             }
+            
         };
         
         return view('dashboard.aset.index',compact('contract'),[
@@ -82,13 +91,14 @@ class AsetController extends Controller
         if ($request->pemilik_id== 0){
             $request['pemilik_id'] = NULL;
             $request['kategori_aset'] = 'AJR';
+            $request['status_kontrak'] = "Tidak memiliki kontrak";
         }else{
             $request['kategori_aset'] = 'Pribadi';
             $contract = (int)((strtotime($request->periode_selesai_kontrak) - strtotime($request->periode_mulai_kontrak))/86400);
             if ($contract > 30) {
                 $request['status_kontrak'] = "On going";
             }else {
-                $request['status_kontrak'] = $contract . "days remaining";
+                $request['status_kontrak'] = $contract. ' days remaining';
             }
         }
 

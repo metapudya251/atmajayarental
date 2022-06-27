@@ -28,7 +28,7 @@
           </div>
           <div class="mb-3">
             <label class="form-label" for="first_name"><strong>No. Tanda Pengenal</strong></label>
-            <input class="form-control" type="text" id="first_name" name="no_ktp" value="{{ Auth::guard('customer')->user()->no_pengenal }}" disabled>
+            <input class="form-control" type="text" id="first_name" name="no_ktp" value="{{ Auth::guard('customer')->user()->no_pengenal }}">
             <span class="text-danger">@error('no_ktp'){{ $message }}@enderror</span>
           </div>
           <div class="mb-3">
@@ -42,22 +42,24 @@
             <select class="form-select" name="driver_id">
               <optgroup label="Driver">
                 @foreach ($driver as $d)
-                  @if (old('customer_id',Auth::guard('customer')->user()->id) == $cust->id)
-                    <option value="{{ $d->id }}"selected>
-                      @if ($d->img == NULL)
-                        <img class="rounded-circle me-2" width="10" height="10" src="{{ url('assets/img/avatars/avatar6.jpeg') }}">{{ $d->nama_driver }}
-                      @else
-                        <img class="rounded-circle me-2" width="10" height="10" src="{{ url('fotodriver/',$d->img) }}">{{ $d->nama_driver}}
-                      @endif
-                    </option>
-                  @else
-                    <option value="{{ $d->id }}">
-                      @if ($d->img == NULL)
-                        <img class="rounded-circle me-2" width="10" height="10" src="{{ url('assets/img/avatars/avatar6.jpeg') }}">{{ $d->nama_driver }}
-                      @else
-                        <img class="rounded-circle me-2" width="10" height="10" src="{{ url('fotodriver/',$d->img) }}">{{ $d->nama_driver}}
-                      @endif
-                    </option>
+                  @if ($d->status_tersedia == 'Tersedia')
+                    @if (old('driver_id') == $d->id )
+                      <option value="{{ $d->id }}"selected>
+                        @if ($d->img == NULL)
+                          <img class="rounded-circle me-2" width="10" height="10" src="{{ url('assets/img/avatars/avatar6.jpeg') }}">{{ $d->nama_driver }}
+                        @else
+                          <img class="rounded-circle me-2" width="10" height="10" src="{{ url('fotodriver/',$d->img) }}">{{ $d->nama_driver}}
+                        @endif
+                      </option>
+                    @else
+                      <option value="{{ $d->id }}">
+                        @if ($d->img == NULL)
+                          <img class="rounded-circle me-2" width="10" height="10" src="{{ url('assets/img/avatars/avatar6.jpeg') }}">{{ $d->nama_driver }}
+                        @else
+                          <img class="rounded-circle me-2" width="10" height="10" src="{{ url('fotodriver/',$d->img) }}">{{ $d->nama_driver}}
+                        @endif
+                      </option>
+                    @endif
                   @endif
                 @endforeach
               </optgroup>
@@ -108,6 +110,7 @@
             <label class="form-label" for="pemilik"><strong>Promo</strong></label>
             <select class="form-select" name="promo_id">
               <optgroup label="Promo">
+                <option value=0 selected></option>
                 @foreach ($promo as $p)
                   @if (old('promo_id') == $p->id)
                     <option value="{{ $p->id }}"selected>{{ $p->kode_promo }} - {{ $p->jenis_promo }}</option>
@@ -157,7 +160,7 @@
           </div>
           <div class="mb-3">
             <label class="form-label" for="first_name"><strong>No. Tanda Pengenal</strong></label>
-            <input class="form-control" type="text" id="first_name" name="no_ktp" value="{{ old('no_ktp',Auth::guard('customer')->user()->no_pengenal) }}" disabled>
+            <input class="form-control" type="text" id="first_name" name="no_ktp" value="{{ old('no_ktp',Auth::guard('customer')->user()->no_pengenal) }}">
             <span class="text-danger">@error('no_ktp'){{ $message }}@enderror</span>
           </div>
           <div class="mb-3">
@@ -216,6 +219,7 @@
             <label class="form-label" for="pemilik"><strong>Promo</strong></label>
             <select class="form-select" name="promo_id">
               <optgroup label="Promo">
+                <option value=0 selected></option>
                 @foreach ($promo as $p)
                   @if (old('promo_id') == $p->id)
                     <option value="{{ $p->id }}"selected>{{ $p->kode_promo }} - {{ $p->jenis_promo }}</option>

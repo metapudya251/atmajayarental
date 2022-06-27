@@ -163,7 +163,19 @@ class TransaksiController extends Controller
         $diff = $to->diff($from);
         $request['selisihTgl'] = $diff->d;
 
+        if ($request->promo_id == 0) {
+            $request['promo_id'] = NULL;
+        }
+        $request['ekstensi_biaya'] = 0;
+
         $transaksi = Transaksi::create($request->all());
+        
+        //set driver
+        if ($transaksi->driver_id != NULL) {
+            $drv = Driver::find($transaksi->driver_id);
+            $drv->status_tersedia = 'Tidak Tersedia';
+            $drv->save();
+        }
 
         if ($request->hasfile('file')) {
             $request->file('file')->move('filecust/',$request->file('file')->getClientOriginalName());
@@ -431,6 +443,10 @@ class TransaksiController extends Controller
         $aset = Aset::find($transaksi->aset_id);
         $aset->status_tersedia = 'Tersedia';
         $aset->save();
+
+        $driver = Driver::find($transaksi->driver_id);
+        $driver->status_tersedia = 'Tersedia';
+        $driver->save();
 
         return back();
     }

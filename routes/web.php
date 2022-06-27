@@ -25,13 +25,6 @@ use App\Http\Controllers\TransaksiController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/nota/{id}', function () {
-    return view('dashboard.transaksi.nota');
-});
-
-Route::get('/cetakNota1/{id}',[TransaksiController::class,'cetakNota1'])->name('cetakNota1');       //panggil halaman show detail
-Route::get('/cetakNota/{id}',[TransaksiController::class,'cetakNota'])->name('cetakNota');       //panggil halaman show detail
-
 
 // Route::get('/profil', function () {
 //     return view('dashboard.pegawai.profil');
@@ -39,20 +32,13 @@ Route::get('/cetakNota/{id}',[TransaksiController::class,'cetakNota'])->name('ce
 
 Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Route::prefix('user')->name('user.')->group(function(){
-    Route::middleware(['guest:web','PreventBackHistory'])->group(function(){
-        Route::view('/login','dashboard.user.login')->name('login');
-        Route::view('/register','dashboard.user.register')->name('register');
-        Route::post('/create',[UserController::class,'create'])->name('create');
-        Route::post('/check',[UserController::class,'check'])->name('check');
+Route::prefix('home')->name('home.')->group(function(){
+    Route::middleware(['guest:pegawai','guest:customer','PreventBackHistory'])->group(function(){
+        Route::view('/home','welcome')->name('home');
     });
-    Route::middleware(['auth:web','PreventBackHistory'])->group(function(){
-        Route::view('/home','dashboard.user.home')->name('home');
-        Route::post('/logout',[UserController::class,'logout'])->name('logout');
-        // Route::get('/add-new',[UserController::class,'add'])->name('add');
-    });
+    // Route::middleware(['auth:customer','PreventBackHistory'])->group(function(){
+    //     Route::view('/home','welocome')->name('home');
+    // });
 });
 
 Route::prefix('pegawai')->name('pegawai.')->group(function(){
@@ -75,6 +61,7 @@ Route::prefix('pegawai')->name('pegawai.')->group(function(){
     });
     Route::middleware(['auth:pegawai','PreventBackHistory'])->group(function(){
         // Route::view('/home','dashboard.pegawai.home')->name('home');
+        Route::view('/home','welcome')->name('home');
         Route::post('/logout',[PegawaiController::class,'logout'])->name('logout');
         Route::get('/index',[PegawaiController::class,'index'])->name('index');     //panggil halaman profil pegawai
         Route::get('/edit/{id}',[PegawaiController::class,'edit'])->name('edit');           //panggil halaman edit
@@ -143,11 +130,13 @@ Route::prefix('customer')->name('customer.')->group(function(){
         Route::post('/check',[CustomerController::class,'check'])->name('check');
     });
     Route::middleware(['auth:customer','PreventBackHistory'])->group(function(){
+        Route::view('/home','welcome')->name('home');
         Route::post('/logoutC',[CustomerController::class,'logoutC'])->name('logoutC');
         Route::view('/profil','dashboard.customer.profil')->name('profil');         //panggil profil customer
         Route::get('/index',[CustomerController::class,'index'])->name('index');     //panggil dashboard customer
         Route::get('/edit/{id}',[CustomerController::class,'edit'])->name('edit');           //panggil halaman edit
         Route::put('/update/{id}',[CustomerController::class,'update'])->name('update');     //panggil methode editnya
+        Route::get('/updateVerifCust/{id}',[CustomerController::class,'updateVerifCust'])->name('updateVerifCust');     //panggil methode editnya
     });
     Route::middleware(['auth:pegawai','PreventBackHistory','cs'])->group(function(){
         Route::post('/logout',[PegawaiController::class,'logout'])->name('logout');
@@ -185,6 +174,8 @@ Route::prefix('transaksi')->name('transaksi.')->group(function(){
         Route::put('/updateBukti/{id}',[TransaksiController::class,'updateBukti'])->name('updateBukti');     //panggil methode editnya
         Route::post('/store',[TransaksiController::class,'store'])->name('store');     //panggil methode tambah
         Route::get('/create/{id}',[TransaksiController::class,'create'])->name('create');    //panggil halaman tambah
+        Route::get('/cetakNota3/{id}',[TransaksiController::class,'cetakNota'])->name('cetakNota3');       //panggil halaman show detail
+        Route::get('/cetakNota4/{id}',[TransaksiController::class,'cetakNota1'])->name('cetakNota4');       //panggil halaman show detail
     });
     Route::middleware(['auth:pegawai','PreventBackHistory','cs'])->group(function(){
         Route::get('/index',[TransaksiController::class,'index'])->name('index');     //panggil halaman promo

@@ -106,13 +106,13 @@ class CustomerController extends Controller
         ]);
 
         $customer = Customer::find($id);
-        // $request['password'] = bcrypt($request->password);
-        if( $request['password'] = $customer->password){
+        $request['password'] = bcrypt($request->password);
+        if( $request['password'] == $customer->password){
             $request->password = $customer->password;
         }else {
-            $request['password'] = $request->password;
+            $request->password = bcrypt($request->password);
         }
-        Customer::find($id)->update($request->all());
+        $customer = Customer::find($id)->update($request->all());
         
         if ($request->hasfile('img')) {
             $request->file('img')->move('fotocust/',$request->file('img')->getClientOriginalName());
@@ -130,17 +130,26 @@ class CustomerController extends Controller
            'email'=>'required|email|exists:customers,email',
            'password'=>'required|min:8|max:12'
         ],[
-            'email.exists'=>'This email is not exists in pegawai table'
+            'email.exists'=>'This email is not exists in customer table'
         ]);
 
         $creds = $request->only('email','password');
 
-        if( Auth::guard('customer')->attempt($creds) ){
+        if( Auth::guard('customer')->attempt($creds)){
             return redirect()->route('customer.index');
         }else{
             return redirect()->route('customer.login')->with('fail','Incorrect credentials');
         }
    }
+
+   public function updateVerifCust(Request $request, $id)
+    {
+        $user = Customer::find($id);
+        $user->status_verif = 'Terverifikasi';
+        $user->save();
+        return redirect()->route('customer.read')   
+            ->with('success','Customer Verify successfully.');
+    }
 
    function add(Request $request){
         //Validate inputs
@@ -182,7 +191,7 @@ class CustomerController extends Controller
             // $request['no_customer'] = $nomor;
             $customer->no_customer = $nomor;
         }
-        // $customer->password = $request->tgl_lahir;
+        $customer->status_verif = 'Belum Verifikasi';
         $save = $customer->save();
 
         if( $save ){

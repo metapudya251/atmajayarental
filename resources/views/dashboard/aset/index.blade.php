@@ -72,7 +72,7 @@
                                             <td><span class="badge bg-warning">{{ $aset->status_kontrak}}</span></td>
                                         @endif
                                     @else
-                                        <td>Tidak Memiliki kontrak</td>
+                                        <td>{{ $aset->status_kontrak}}</td>
                                     @endif
                                     <td class="text-center">
                                         <form action="{{ route('aset.destroy',$aset->id) }}">

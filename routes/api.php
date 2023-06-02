@@ -38,6 +38,7 @@ Route::put('driver/{id}', 'Api\DriverController@update' );
 Route::delete('driver/{id}', 'Api\DriverController@destroy' );
 //Customer
 Route::get('customer', 'Api\CustomerController@index' );
+Route::get('logincust/{username}/{password}', 'Api\CustomerController@login' );
 Route::get('customer/{id}', 'Api\CustomerController@show' );
 Route::post('customer', 'Api\CustomerController@store' );
 Route::put('customer/{id}', 'Api\CustomerController@update' );

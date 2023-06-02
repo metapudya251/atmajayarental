@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Validator;
 use App\Models\Customer;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
@@ -142,4 +143,28 @@ class CustomerController extends Controller
             'data' => null,
         ], 400);
     }
+
+    public function login($email,$password)
+    {
+        //$loginData = $request->all();
+        $loginData['email'] = $email;
+        $loginData['password'] = $password;
+        $validate = Validator::make($loginData, [
+            'email' => 'required',
+            'password' => 'required'
+        ]); // membuat rule validasi input
+
+        if ($validate->fails())
+            return response(['message' => $validate->errors()], 400); // return error validasi input
+        
+        if (!Auth::guard('customer')->attempt($loginData))
+            return response(['message' => 'Invalid Credentials'], 401); // return error gagal login
+
+        $user = Auth::guard('customer')->user();
+
+        return response([
+            'message' => 'true',
+            'user' => $user
+        ]); // return data user dalam bentuk json
+    } 
 }
